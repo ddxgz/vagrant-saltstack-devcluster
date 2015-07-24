@@ -1,16 +1,17 @@
-docker_repo:
-  pkgrepo.managed:
-    - repo: 'deb http://get.docker.io/ubuntu docker main'
-    - file: '/etc/apt/sources.list.d/docker.list'
-    - key_url: salt://docker/docker.pgp
-    - require_in:
-      - pkg: lxc-docker
-
-lxc-docker:
-  pkg.latest
-
-python-docker:
-  pkg.latest
+docker.io:
+    pkg.latest
 
 docker:
-  service.running
+    service.running
+
+new-pip:
+    cmd.run:
+        - name: sudo easy_install -U pip
+        - require:
+            - service: docker
+
+python-package:
+    cmd.run:
+        - name: sudo pip install -r /srv/salt/docker/requirements.txt
+        - require:
+            - cmd: new-pip

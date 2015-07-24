@@ -49,6 +49,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     node.hostmanager.aliases = %w(salt)
 
     node.vm.synced_folder "./salt/roots/salt", "/srv/salt"
+    node.vm.synced_folder "./data", "/home/vagrant/data"
 
     node.vm.provision :salt do |salt|
 
@@ -63,7 +64,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       salt.minion_key = "./salt/keys/master1/minion.pem"
       salt.minion_pub = "./salt/keys/master1/minion.pub"
-      salt.run_highstate = true
+      # salt.run_highstate = true
     end
 
   end
@@ -79,11 +80,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       node.vm.box      = "mytrusty"
       node.vm.hostname = hostname 
+      node.vm.synced_folder "./salt/roots/salt", "/srv/salt"
+      node.vm.synced_folder "./data", "/home/vagrant/data"
 
       node.vm.provision :salt do |salt|
+        # salt.minion_config = ".salt/keys/#{hostname}/minion.conf"
+        # salt.minion_id = hostname
         salt.minion_key = "./salt/keys/#{hostname}/minion.pem"
         salt.minion_pub = "./salt/keys/#{hostname}/minion.pub"
-        salt.run_highstate = true
+        # salt.run_highstate = true
       end
 
     end

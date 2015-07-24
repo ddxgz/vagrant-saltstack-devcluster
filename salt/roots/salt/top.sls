@@ -1,6 +1,6 @@
 base:
-  'master1':
-    - docker
-  'minion1':
-    - docker
+    'master1':
+        - docker
+    'minion1':
+        - docker
 
