@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "master1" do |node|
 
-    node.vm.box      = "ubuntu-14.10-server-64"
+    node.vm.box      = "mytrusty"
     node.vm.hostname = "master1"
     node.hostmanager.aliases = %w(salt)
 
@@ -63,7 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       salt.minion_key = "./salt/keys/master1/minion.pem"
       salt.minion_pub = "./salt/keys/master1/minion.pub"
-
+      salt.run_highstate = true
     end
 
   end
@@ -77,12 +77,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   minions.each do |hostname|
     config.vm.define hostname do |node|
 
-      node.vm.box      = "ubuntu-14.10-server-64"
+      node.vm.box      = "mytrusty"
       node.vm.hostname = hostname 
 
       node.vm.provision :salt do |salt|
         salt.minion_key = "./salt/keys/#{hostname}/minion.pem"
         salt.minion_pub = "./salt/keys/#{hostname}/minion.pub"
+        salt.run_highstate = true
       end
 
     end
